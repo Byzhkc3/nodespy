@@ -22,6 +22,21 @@ for (var i = 0; i < 11; i++) {
     urls.push('http://jandan.net/ooxx/page-' + i + '#comments');
 }
 
+// 并发连接数的计数器
+var concurrencyCount = 0;
+var fetchUrl = function(url, callback) {
+    // delay 的值在 2500 以内，是个随机的整数
+    var delay = parseInt((Math.random() * 30000000) % 2500, 10);
+    concurrencyCount++;
+    console.log('现在的并发数是', concurrencyCount, '，正在抓取的是', url,
+        '，耗时' + delay + '毫秒');
+
+    setTimeout(function() {
+        concurrencyCount--;
+        callback(null, url + ' html content');
+    }, delay);
+
+};
 
 // 获取数据
 var items = [];
@@ -52,7 +67,7 @@ var getDate = function(url, next) {
             // 数据库插入
             dbConfig.conn.query('INSERT INTO mmz SET ?', post,
                 function(err, result) {
-                    console.log('数据插入成功' + ' ' + post[i].url + dateTime);
+                    console.log('数据插入成功' + ' ' + data + ' ' + dateTime);
                 });
             // conn.end();
 
@@ -61,26 +76,11 @@ var getDate = function(url, next) {
     });
 }
 
-// 并发连接数的计数器
-var concurrencyCount = 0;
-var fetchUrl = function(url, callback) {
-    // delay 的值在 2500 以内，是个随机的整数
-    var delay = parseInt((Math.random() * 30000000) % 2500, 10);
-    concurrencyCount++;
-    console.log('现在的并发数是', concurrencyCount, '，正在抓取的是', url,
-        '，耗时' + delay + '毫秒');
-
-    setTimeout(function() {
-        concurrencyCount--;
-        callback(null, url + ' html content');
-    }, delay);
-
-};
 
 // 控制并发数为5
 async.mapLimit(urls, 2, function(url, callback) {
 
-    // 需要爬取数据时请去掉下列注释
+    // 运行数据获取程序
     fetchUrl(url, callback);
     getDate(url);
 
@@ -92,7 +92,7 @@ async.mapLimit(urls, 2, function(url, callback) {
 
 // 返回默认首页
 app.get('/', function(req, res) {
-    res.send('这个页面没东西哦');
+    res.send('爬虫正在运行中');
 });
 
 
@@ -102,7 +102,7 @@ app.use(function(err, req, res, next) {
     res.status(500).send('500');
 });
 
-var port = 3000;
+var port = 3002;
 // 端口监听
 app.listen(port, function(req, res) {
     console.log('app is running:' + port);
