@@ -1,3 +1,7 @@
+/**
+ * Created by byzhkc3 on 2016/11/25 .
+ */
+'use strict';
 // 引入依赖
 var express = require('express');
 var cheerio = require('cheerio');
