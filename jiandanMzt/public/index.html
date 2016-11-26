@@ -31,8 +31,8 @@
             <div class="inner split">
                 <div>
                     <section>
-                        <h2>Magna feugiat sed adipiscing</h2>
-                        <p>Nulla consequat, ex ut suscipit rutrum, mi dolor tincidunt erat, et scelerisque turpis ipsum eget quis orci mattis aliquet. Maecenas fringilla et ante at lorem et ipsum. Dolor nulla eu bibendum sapien. Donec non pharetra dui. Nulla consequat, ex ut suscipit rutrum, mi dolor tincidunt erat, et scelerisque turpis ipsum.</p>
+                        <h2>妹子图</h2>
+                        <p>每日更新最新分享最新最全的妹子图片</p>
                     </section>
                     <section>
                         <h2>求关注。。。</h2>
@@ -49,13 +49,13 @@
                         </ul>
                     </section>
                     <p class="copyright">
-                        &copy; 妹子图: <a href="http://zkiie.com">byzhkc3</a>.
+                        &copy; 妹子图: <a href="http://zkiie.com" target="_blank">byzhkc3</a>.
                     </p>
                 </div>
                 <div>
                     <section>
                         <h2>请在下方留下您的意见或建议</h2>
-                        <form method="post" action="#">
+                        <form method="post" action="javascript:;">
                             <div class="field half first">
                                 <input type="text" name="name" id="name" placeholder="Name" />
                             </div>
@@ -63,11 +63,12 @@
                                 <input type="text" name="email" id="email" placeholder="Email" />
                             </div>
                             <div class="field">
-                                <textarea name="message" id="message" rows="4" placeholder="Message"></textarea>
+                                <textarea name="message" id="message" rows="4" placeholder="Message">
+                                </textarea>
                             </div>
                             <ul class="actions">
                                 <li>
-                                    <input type="submit" value="提交" class="special" />
+                                    <input type="submit" value="提交" id="submit" class="special" />
                                 </li>
                                 <li>
                                     <input type="reset" value="清除" />
@@ -86,11 +87,20 @@
     <script src="assets/js/util.js"></script>
     <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/click.js"></script>
     <script>
     $(function() {
+
+        readyload();
+
         // 动态插入的html，需要委派事件处理。
         $('#main').delegate('.thumb', 'click', function() {
-            // Main.
+            readyload();
+        })
+
+        function readyload() {
+
+            // Main. 
             var $main = $('#main');
             var $body = $('body');
             // Thumbs.
@@ -176,7 +186,7 @@
                 .on('+xsmall', function() {
                     $main[0]._poptrox.windowMargin = 0;
                 });
-        })
+        }
 
     })
     </script>

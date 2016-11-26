@@ -1,16 +1,4 @@
-(function($) {
-
-    skel.breakpoints({
-        xlarge: '(max-width: 1680px)',
-        large: '(max-width: 1280px)',
-        medium: '(max-width: 980px)',
-        small: '(max-width: 736px)',
-        xsmall: '(max-width: 480px)'
-    });
-
-
-
-    // ajax 方法封装 需要配合jQuery使用
+// ajax 方法封装 需要配合jQuery使用
     // URL 链接地址
     // data 提交的数据
     // method 提交的方法
@@ -55,43 +43,21 @@
         return template;
     }
 
-
-    // 从后台获取数据
-    function index() {
-        // 发起请求
-        myAjax("./api", {}, 'GET', draw, fal);
-        // 成功方法
-        function draw(res) {
-            console.log(res);
-            if (res.code === 200) {
-                var data = res.data;
-                var html = '';
-                for (var i = 0; i < data.length; i++) {
-                    temp = "<article class='thumb'>\
-    	                			<a href=\'%s\' class='image'>\
-    	                				<img src=\'%s\' alt='' />\
-    	                			</a>\
-    	                			<h2>%s</h2>\
-                				</article>"
-                    html += (format(temp, [data[i].url, data[i].url, data[i].name]));
-                }
-                $('#main').html(html);
-
-            }
-
-        }
-        // 失败函数
-        function fal(err) {
-            console.log(err);
-        }
-
+    // 标签转义
+    function htmlEncode(str) {
+        return $('<span/>').text(str).html();
     }
 
-    index();
 
-
-
+(function($) {
     $(function() {
+        skel.breakpoints({
+            xlarge: '(max-width: 1680px)',
+            large: '(max-width: 1280px)',
+            medium: '(max-width: 980px)',
+            small: '(max-width: 736px)',
+            xsmall: '(max-width: 480px)'
+        });
 
         var $window = $(window),
             $body = $('body'),
