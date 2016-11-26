@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>妹子图</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+</head>
+
+<body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Header -->
+        <header id="header">
+            <h1><a href="./index.html"><strong>妹子图</strong> by BYZHKC3</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="#footer" class="icon fa-info-circle">About</a></li>
+                </ul>
+            </nav>
+        </header>
+        <!-- Main -->
+        <div id="main">
+        </div>
+        <!-- Footer -->
+        <footer id="footer" class="panel">
+            <div class="inner split">
+                <div>
+                    <section>
+                        <h2>Magna feugiat sed adipiscing</h2>
+                        <p>Nulla consequat, ex ut suscipit rutrum, mi dolor tincidunt erat, et scelerisque turpis ipsum eget quis orci mattis aliquet. Maecenas fringilla et ante at lorem et ipsum. Dolor nulla eu bibendum sapien. Donec non pharetra dui. Nulla consequat, ex ut suscipit rutrum, mi dolor tincidunt erat, et scelerisque turpis ipsum.</p>
+                    </section>
+                    <section>
+                        <h2>求关注。。。</h2>
+                        <ul class="icons">
+                            <li>
+                                <a href="https://twitter.com/ByZHkc3" class="icon fa-twitter">
+                                    <span class="label">Twitter</span></a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/Byzhkc3" class="icon fa-github">
+                                    <span class="label">GitHub</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+                    <p class="copyright">
+                        &copy; 妹子图: <a href="http://zkiie.com">byzhkc3</a>.
+                    </p>
+                </div>
+                <div>
+                    <section>
+                        <h2>请在下方留下您的意见或建议</h2>
+                        <form method="post" action="#">
+                            <div class="field half first">
+                                <input type="text" name="name" id="name" placeholder="Name" />
+                            </div>
+                            <div class="field half">
+                                <input type="text" name="email" id="email" placeholder="Email" />
+                            </div>
+                            <div class="field">
+                                <textarea name="message" id="message" rows="4" placeholder="Message"></textarea>
+                            </div>
+                            <ul class="actions">
+                                <li>
+                                    <input type="submit" value="提交" class="special" />
+                                </li>
+                                <li>
+                                    <input type="reset" value="清除" />
+                                </li>
+                            </ul>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.poptrox.min.js"></script>
+    <script src="assets/js/skel.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+    <script src="assets/js/main.js"></script>
+    <script>
+    $(function() {
+        // 动态插入的html，需要委派事件处理。
+        $('#main').delegate('.thumb', 'click', function() {
+            // Main.
+            var $main = $('#main');
+            var $body = $('body');
+            // Thumbs.
+            $main.children('.thumb').each(function() {
+
+                var $this = $(this),
+                    $image = $this.find('.image'),
+                    $image_img = $image.children('img'),
+                    x;
+
+                // No image? Bail.
+                if ($image.length == 0)
+                    return;
+
+                // Image.
+                // This sets the background of the "image" <span> to the image pointed to by its child
+                // <img> (which is then hidden). Gives us way more flexibility.
+
+                // Set background.
+                $image.css('background-image', 'url(' + $image_img.attr('src') + ')');
+
+                // Set background position.
+                if (x = $image_img.data('position'))
+                    $image.css('background-position', x);
+
+                // Hide original img.
+                $image_img.hide();
+
+                // Hack: IE<11 doesn't support pointer-events, which means clicks to our image never
+                // land as they're blocked by the thumbnail's caption overlay gradient. This just forces
+                // the click through to the image.
+                if (skel.vars.IEVersion < 11)
+                    $this
+                    .css('cursor', 'pointer')
+                    .on('click', function() {
+                        $image.trigger('click');
+                    });
+
+            });
+
+            // Poptrox.
+            $main.poptrox({
+                baseZIndex: 20000,
+                caption: function($a) {
+
+                    var s = '';
+
+                    $a.nextAll().each(function() {
+                        s += this.outerHTML;
+                    });
+
+                    return s;
+
+                },
+                fadeSpeed: 300,
+                onPopupClose: function() {
+                    $body.removeClass('modal-active');
+                },
+                onPopupOpen: function() {
+                    $body.addClass('modal-active');
+                },
+                overlayOpacity: 0,
+                popupCloserText: '',
+                popupHeight: 150,
+                popupLoaderText: '',
+                popupSpeed: 300,
+                popupWidth: 150,
+                selector: '.thumb > a.image',
+                usePopupCaption: true,
+                usePopupCloser: true,
+                usePopupDefaultStyling: false,
+                usePopupForceClose: true,
+                usePopupLoader: true,
+                usePopupNav: true,
+                windowMargin: 50
+            });
+
+            // Hack: Set margins to 0 when 'xsmall' activates.
+            skel
+                .on('-xsmall', function() {
+                    $main[0]._poptrox.windowMargin = 50;
+                })
+                .on('+xsmall', function() {
+                    $main[0]._poptrox.windowMargin = 0;
+                });
+        })
+
+    })
+    </script>
+</body>
+
+</html>

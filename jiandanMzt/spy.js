@@ -76,7 +76,6 @@ var getDate = function(url, next) {
     });
 }
 
-
 // 控制并发数为5
 async.mapLimit(urls, 2, function(url, callback) {
 
@@ -89,12 +88,10 @@ async.mapLimit(urls, 2, function(url, callback) {
 
 });
 
-
 // 返回默认首页
 app.get('/', function(req, res) {
     res.send('爬虫正在运行中');
 });
-
 
 // 异常处理
 app.use(function(err, req, res, next) {

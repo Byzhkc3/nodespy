@@ -11,28 +11,42 @@ var async = require('async');
 var mysql = require('mysql');
 // 建立 express 实例
 var app = express();
-var dbConfig = require('./mysql');
+var dbConfig = require('./dbConfig');
 
 // 开关数据库连接
-// dbConfig.conn.connect();
+dbConfig.conn.connect();
+
+// 设置静态文件
+app.use(express.static('public'));
+
 
 // 返回默认首页
 app.get('/', function(req, res) {
-    res.send('这是一个爬虫页');
+    res.sendFile('./index.html');
 });
 
-// 返回的API接口 
-app.get('/api', function(req, res, next) {
 
-    // res.send(tmp);
-    // 返回json格式
-    res.json({
-        code: 200,
-        msg: '数据获取成功',
-        data: "测试数据"
+var sql = 'SELECT * FROM `mmz` limit 12';
+dbConfig.conn.query(sql, function(err, rows) {
+    var data = rows;
+
+    // 返回的API接口 
+    app.get('/api', function(req, res, next) {
+        console.log(data);
+        // 返回json格式
+        res.json({
+            code: 200,
+            msg: '数据获取成功',
+            data: data
+        });
+
     });
 
+    return data;
+
 });
+
+
 
 // 异常处理
 app.use(function(err, req, res, next) {
@@ -40,8 +54,8 @@ app.use(function(err, req, res, next) {
     res.status(500).send('500');
 });
 
-var port = 8080;
+var port = 8099;
 // 端口监听
 app.listen(port, function(req, res) {
-    console.log('app is running' + port);
+    console.log('app is running:' + port);
 });
